@@ -4,46 +4,27 @@ import { readCard, readDeck, updateCard } from "../utils/api/index";
 import CardForm from "../Components/CardForm";
 
 function EditCard() {
-    const { deckId, cardId } = useParams();
+    const { cardId } = useParams();
     const navigate = useNavigate();
-    const initialDeckState = {
-        id: "",
-        name: "",
-        description: "",
-    };
-    const initialCardState = {
-        id: "",
-        front: "",
-        back: "",
-        deckId: "",
-    };
-
-    const [card, setCard] = useState(initialDeckState);
-    const [deck, setDeck] = useState(initialCardState);
-
-    useEffect(() => {
-        async function fetchData() {
-            const abortController = new AbortController();
-            try {
-                const cardResponse = await readCard(
-                    cardId,
-                    abortController.signal
-                );
-                const deckResponse = await readDeck(
-                    deckId,
-                    abortController.signal
-                );
-                setCard(cardResponse);
-                setDeck(deckResponse);
-            } catch (error) {
-                console.error("Something went wrong", error);
-            }
-            return () => {
-                abortController.abort();
-            };
+    const [card, setCard] = useState({ front: "", back: "" });
+    const [deck, setDeck] = useState({ name: "" });
+   
+useEffect(() => {
+    const abortController = new AbortController();
+    readCard(cardId, abortController.signal)
+      .then((card) => {
+        setCard(card);
+        return readDeck(card.deckId, abortController.signal); // Fetch the deck only after card is fetched
+      })
+      .then(setDeck)
+      .catch((error) => {
+        if (error.name !== 'AbortError') {
+          console.error("Error reading card or deck:", error);
         }
-        fetchData();
-    }, [cardId, deckId]);
+      });
+
+    return () => abortController.abort();
+  }, [cardId]);
 
     function handleChange({ target }) {
         setCard({
@@ -56,12 +37,12 @@ function EditCard() {
         event.preventDefault();
         const abortController = new AbortController();
         const response = await updateCard({ ...card }, abortController.signal);
-        navigate(`/decks/${deckId}`);
+        navigate(`/decks/${card.deckId}`);
         return response;
     }
 
     async function handleCancel() {
-        navigate(`/decks/${deckId}`);
+        navigate(`/decks/${card.deckId}`);
     }
 
     return (

@@ -6,13 +6,14 @@ import CardForm from "../Components/CardForm";
 function AddCard() {
     const { deckId } = useParams();
     const navigate = useNavigate();
+    const [deck, setDeck] = useState("");
     const initialState = {
         front: "",
         back: "",
     };
 
     const [newCard, setNewCard] = useState(initialState);
-    const [deck, setDeck] = useState({});
+    
 
     useEffect(() => {
         async function fetchData() {
