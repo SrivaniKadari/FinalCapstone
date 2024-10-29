@@ -1,51 +1,55 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
-const CardForm = ({ mode, deckName, card, handleChange, handleSubmit, handleCancel }) => {
-    return (
-        <div>
-            <ol className="breadcrumb">
-                <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
-                </li>
-                <li className="breadcrumb-item">
-                    <Link to={`/decks/${card.deckId}`}>{deckName || 'Deck'}</Link>
-                </li>
-                <li className="breadcrumb-item active">
-                    {mode === 'edit' ? `Edit Card ${card.id}` : 'Add Card'}
-                </li>
-            </ol>
+function CardForm({ formData, setFormData, onSubmit, submitButtonText, cancelButtonText, deck }) {
+    const navigate = useNavigate();
+
+    function handleInput(event) {
+        setFormData({
+            ...formData,
+            [event.target.name]: event.target.value
+        });
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+        onSubmit(formData);
+    }
+
+      return (
+        <div className="w-100">
             <form onSubmit={handleSubmit}>
-                <h2>{mode === 'edit' ? 'Edit Card' : 'Add Card'}</h2>
                 <div className="form-group">
-                    <label>Front</label>
+                    <label htmlFor="front">Front</label>
                     <textarea
                         id="front"
                         name="front"
                         className="form-control"
-                        onChange={handleChange}
-                        value={card.front|| ''}
+                        onChange={handleInput}
+                        value={formData.front || ''}
+                        placeholder="Front side of card"
                     />
                 </div>
                 <div className="form-group">
-                    <label>Back</label>
+                    <label htmlFor="back">Back</label>
                     <textarea
                         id="back"
                         name="back"
                         className="form-control"
-                        onChange={handleChange}
-                        value={card.back|| ''}
+                        onChange={handleInput}
+                        value={formData.back || ''}
+                        placeholder="Back side of card"
                     />
                 </div>
                 <button
                     type="button"
-                    className="btn btn-secondary mx-1"
-                    onClick={handleCancel}
+                    className="btn btn-secondary mr-3"
+                    onClick={() => navigate(`/decks/${deck.id}`)}
                 >
-                    Cancel
+                    {cancelButtonText}
                 </button>
-                <button className="btn btn-primary mx-1" type="submit">
-                    {mode === 'edit' ? 'Save' : 'Create'}
+                <button type="submit" className="btn btn-primary">
+                    {submitButtonText}
                 </button>
             </form>
         </div>
