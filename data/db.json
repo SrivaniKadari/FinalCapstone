@@ -11,14 +11,9 @@
       "id": 2
     },
     {
-      "name": "er",
-      "description": "er",
+      "name": "test deck cards",
+      "description": "testing started",
       "id": 5
-    },
-    {
-      "name": "test deck",
-      "description": "testttttttttttttttttt",
-      "id": 6
     }
   ],
   "cards": [
@@ -75,6 +70,24 @@
       "back": "ww",
       "deckId": 2,
       "id": 14
+    },
+    {
+      "front": "test front",
+      "back": "test back",
+      "deckId": 5,
+      "id": 15
+    },
+    {
+      "front": "test again",
+      "back": "one more",
+      "deckId": 5,
+      "id": 16
+    },
+    {
+      "front": "one last time",
+      "back": "here we go",
+      "deckId": 5,
+      "id": 17
     }
   ]
 }

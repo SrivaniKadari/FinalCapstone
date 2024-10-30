@@ -5,9 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from "../Components/Home";
 import CreateDeck from "../Components/CreateDeck";
 import EditDeck from "../Components/EditDeck";
-import EditCard from "../Components/EditCard";
 import Study from '../Components/Study';
-import AddCard from '../Components/AddCard';
 import DeckScreen from "../Components/DeckScreen";
 
 function Layout() {
